@@ -1,0 +1,40 @@
+ # using yml file instead of properties is a little bit more structured
+ ## Hibernate Properties
+ # The SQL dialect makes Hibernate generate better SQL for the chosen database
+spring:
+  datasource:
+    username: "root"
+    password: "12345678"
+    url: "jdbc:mysql://localhost:3306/twitter_copy"
+  jooq:
+    sql-dialect: org.hibernate.dialect.MySQL5InnoDBDialect
+spring.jpa.hibernate.ddl-auto: update
+
+logging:
+  level:
+    org:
+      hibernate:
+        type=trace:
+
+ # below is the configuration for the 'dev' profile
+# it inherits all from the default profile above, but can also
+# override values.
+---
+spring.profiles: dev
+spring.datasource.url: "jdbc:mysql://localhost:3306/twitter_copy"
+# modify the web pages, without restarting the backend
+spring.resources.static-locations: "file:src/main/resources"
+
+
+# a profile setup to run on Heroku
+---
+spring.profiles: heroku
+server:
+  port: "${PORT}"
+spring:
+  datasource:
+    url: "${JDBC_DATABASE_URL}"
+    username: "${JDBC_DATABASE_USERNAME}"
+    password: "${JDBC_DATABASE_PASSWORD}"
+
+
